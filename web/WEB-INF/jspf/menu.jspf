@@ -1,0 +1,86 @@
+<%-- any content can be specified here e.g.: --%>
+<%@page import="br.com.fatecpg.school.User"%>
+<%@ page pageEncoding="UTF-8" %>
+<%
+    String path = request.getContextPath();
+    String errorMessage = null;
+    if (request.getParameter("formLogin") != null) {
+        String login = request.getParameter("login");
+        String pass = request.getParameter("pass");
+        User u = User.getUser(login, pass);
+        if (u == null) {
+            errorMessage = "Usuario e/ou Senha inválidos.";
+        } else {
+            session.setAttribute("user", u);
+            response.sendRedirect(request.getRequestURI());
+        }
+    }
+    if (request.getParameter("formLogoff") != null) {
+        session.removeAttribute("user");
+        response.sendRedirect(request.getRequestURI());
+    }
+%>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="#">SIGA</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <%if (session.getAttribute("user") == null) {%>
+            <form class="form-inline mt-2 mt-md-0">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ExemploModalCentralizado">LOGIN</button>
+            </form>
+            <%} else {%>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="<%=path%>/index.jsp">HOME<span class="sr-only">(atual)</span></a>
+                    </li>
+                    <%User user = (User) session.getAttribute("user");%>
+                    <%if(user.getRole().equals("ADMIN")) {%>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<%=path%>/admin/users.jsp">USUARIOS</a>
+                        </li>
+                    <%}%>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<%=path%>/operation/students.jsp">ESTUDANTES</a>
+                    </li>
+                </ul>
+                <form class="text-light">
+                    Bem vindo, <%= user.getName()%> [<%= user.getRole()%>]
+                    <input class="btn btn-danger" type="submit" name="formLogoff" value="Sair"/>
+                </form>
+            <%}%>
+            </div>
+        </div>
+    </nav>
+    <% if (errorMessage != null) {%>
+        <h3 style="color:red"><%= errorMessage%></h3>
+    <%}%>
+    <!-- Modal -->
+    <div class="modal fade" id="ExemploModalCentralizado" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="TituloModalCentralizado">Acesso a área restrita</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-signin" method="get">
+                        <label for="inputUser" class="sr-only">Usuario</label>
+                        <input type="text" id="inputUser" class="form-control" placeholder="Usuario" required autofocus name="login">
+                        <label for="inputPassword" class="sr-only">Senha</label>
+                        <input type="password" id="inputPassword" class="form-control" placeholder="Senha" required name="pass">
+                        <br><input class="btn btn-lg btn-primary btn-block" type="submit" name="formLogin" value="Entrar"/>
+                    </form>
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
