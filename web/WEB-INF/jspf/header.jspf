@@ -11,8 +11,9 @@
             errorMessage = "Usuario e/ou senha invalidos";
         }else{
             session.setAttribute("user", u);
+            response.sendRedirect(request.getRequestURI());
         }
-        response.sendRedirect(request.getRequestURI());
+        
     }
     if(request.getParameter("formLogoff")!=null){
         session.removeAttribute("user");
