@@ -29,3 +29,5 @@ os.arch=amd64
 os.version=10.0
 derby.system.home=C:\Users\davil\OneDrive\Área de Trabalho\Projeto06\Escola
 Carregador de classe do banco de dados iniciado - derby.database.classpath=''
+----------------------------------------------------------------
+Fri May 31 16:53:01 BRT 2019: Shutting down Derby engine
