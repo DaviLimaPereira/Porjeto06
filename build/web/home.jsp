@@ -21,6 +21,6 @@
                 <p>Volte para o <a href="../sticky-footer">sticky footer padrão</a> sem a navbar.</p>
             </div>
         </main>
-        
+        <%@include file="WEB-INF/jspf/footer.jspf" %>
     </body>
 </html>
