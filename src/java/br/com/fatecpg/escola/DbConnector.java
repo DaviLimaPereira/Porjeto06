@@ -41,4 +41,16 @@ public class DbConnector {
         rs.close(); stmt.close(); con.close();
         return list;
     }
+    
+    public static void execute(String SQL, Object[] parameters) 
+            throws Exception{
+        Class.forName(DRIVER);
+        Connection con = DriverManager.getConnection(URL, USER, PASS);
+        PreparedStatement stmt = con.prepareStatement(SQL);
+        for(int i=0; i< parameters.length; i++){
+            stmt.setObject(i+1, parameters[i]);
+        }
+        stmt.execute();
+        stmt.close(); con.close();
+    }
 }
