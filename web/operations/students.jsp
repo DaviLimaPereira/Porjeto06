@@ -9,6 +9,7 @@
 <!DOCTYPE html>
 <%
     String error = null;
+    String names = null;
     if(request.getParameter("formDeleteUser")!=null){
         try{
            long id = Long.parseLong(request.getParameter("id"));
@@ -29,7 +30,7 @@
         }catch(Exception e){
             error = e.getMessage();
         }
-    }
+    }       
 %>
 <html>
     <head>
@@ -63,36 +64,39 @@
                     <fieldset>
                         <legend>BUSCAR ESTUDANTE:</legend>
                             <form>
-                                NOME: <input type="text" name="name"/>
+                                NOME: <input type="text" name="names"/>
                                 <input type="submit" name="searchStudent" value="Buscar"/>
                             </form>
                     </fieldset>
+                    <%if(request.getParameter("searchStudent")!=null){%>
                     <table border="1">
                         <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>NOME</th>
-                                <th>TURMA</th>
+                                <th>ENDEREÇO</th>
                                 <th>TELEFONE</th>
+                                <th>COMANDO</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <%--for(Student s: User.getUsers()){%>
+                            <%for(Student s: Student.getStudent(names)){%>
                                 <tr>
-                                    <td><%=u.getId()%></td>
-                                    <td><%=u.getRole()%></td>
-                                    <td><%=u.getName() %></td>
-                                    <td><%=u.getLogin() %></td>
+                                    <td><%=s.getId()%></td>
+                                    <td><%=s.getName() %></td>
+                                    <td><%=s.getAddress()%></td>
+                                    <td><%=s.getPhone()%></td>
                                     <td>
                                         <form>
-                                            <input type="hidden" name="id" value="<%=u.getId()%>"/>
+                                            <input type="hidden" name="id" value="<%=s.getId()%>"/>
                                             <input type="submit" name="formDeleteUser" value="Remover"/>
                                         </form>
                                     </td>
                                 </tr>
-                            <%}--%>
+                            <%}%>
                         </tbody>
                     </table>
+                <%}%>
                 <%}%>
             </div>
         </main>

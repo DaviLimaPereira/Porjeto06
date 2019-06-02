@@ -60,5 +60,21 @@ public class Classes {
         this.id_teacher = id_teacher;
     }
     
+    public static void addClass(String class_name, String period_class) throws Exception{
+        String SQL = "INSERT INTO classes VALUES(default,?,?)";
+        Object parameters[] = {class_name, period_class};
+        DbConnector.execute(SQL, parameters);
+    }
     
+    public static void addClassTeacher(long id_teacher, long id) throws Exception{
+        String SQL = "UPDATE classes SET id_teacher = ? WHERE id = ?;";
+        Object parameters[] = {id_teacher, id};
+        DbConnector.execute(SQL, parameters);
+    }
+    
+    public static void removeClass(long id) throws Exception{
+        String SQL = "DELETE FROM classes WHERE ID = ?";
+        Object parameters[] = {id};
+        DbConnector.execute(SQL, parameters);
+    }
 }

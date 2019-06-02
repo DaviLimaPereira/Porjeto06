@@ -68,4 +68,39 @@ public class Student {
         DbConnector.execute(SQL, parameters);
     }
     
+    public static ArrayList<Student> getStudents() throws Exception{
+        String SQL = "SELECT * FROM students";
+        ArrayList<Student> users = new ArrayList<>();
+        ArrayList<Object[]> list = DbConnector.getQuery(SQL, new Object[]{});
+        for(int i=0; i<list.size(); i++){
+            Object row[] = list.get(i);
+            Student u = new Student(
+                    (long) row[0], 
+                    (String) row[1], 
+                    (String)row[2], 
+                    (String)row[3]);
+            users.add(u);
+        }
+        return users;
+    }
+    
+    public static ArrayList<Student> getStudent(String names) throws Exception{
+        String SQL = "SELECT * FROM students WHERE name like '%?%' order by name";
+        Object parameters[] = {names};
+        ArrayList<Student> students = new ArrayList<>();
+        ArrayList<Object[]> list = DbConnector.getQuery(SQL, parameters);
+        if(list.isEmpty()){
+            return null;
+        }else{
+            for(int i=0; i<list.size(); i++){
+            Object row[] = list.get(i);
+            Student s = new Student(
+                    (long) row[0], 
+                    (String) row[1], 
+                    (String)row[2], 
+                    (String)row[3]);
+            students.add(s);
+            }
+        return students;}
+    }
 }
