@@ -36,6 +36,9 @@
 </form>
     <h2>
     <a href="<%=path%>/home.jsp">HOME</a>
+    <a href="<%=path%>/operations/students.jsp">ESTUDANTES</a>
+    <a href="<%=path%>/operations/teachers.jsp">PROFESSORES</a>
+    <a href="<%=path%>/operations/classes.jsp">TURMAS</a>
     <%if(user.getRole().equals("ADMIN")){%>
         [<a href="<%=path%>/admin/users.jsp">USUÁRIOS</a>]
     <%}%>
