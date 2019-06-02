@@ -5,6 +5,8 @@
  */
 package br.com.fatecpg.escola;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author davil
@@ -52,6 +54,18 @@ public class Student {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+    
+    public static void addStudent(String name, String address, String phone) throws Exception{
+        String SQL = "INSERT INTO STUDENTS VALUES(default,?,?,?)";
+        Object parameters[] = {name, address, phone};
+        DbConnector.execute(SQL, parameters);
+    }
+    
+    public static void removeStudent(long id) throws Exception{
+        String SQL = "DELETE FROM STUDENTS WHERE ID = ?";
+        Object parameters[] = {id};
+        DbConnector.execute(SQL, parameters);
     }
     
 }
