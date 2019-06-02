@@ -95,6 +95,7 @@
                 <%}%>
             </div>
         </main>
+            <!-- Começa o footer da página -->
         <%@include file="../WEB-INF/jspf/footer.jspf" %>
     </body>
 </html>
