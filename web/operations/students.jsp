@@ -4,14 +4,99 @@
     Author     : davil
 --%>
 
+<%@page import="br.com.fatecpg.escola.Student"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%
+    String error = null;
+    if(request.getParameter("formDeleteUser")!=null){
+        try{
+           long id = Long.parseLong(request.getParameter("id"));
+           Student.removeStudent(id);
+           response.sendRedirect(request.getRequestURI());
+        }catch(Exception e){
+            error = e.getMessage();
+        } 
+    }
+    if(request.getParameter("formNewStudent")!=null){
+        String name = request.getParameter("name");
+        String address = request.getParameter("address");
+        String phone = request.getParameter("phone");
+        
+        try{
+            Student.addStudent(name, address, phone);
+            response.sendRedirect(request.getRequestURI());
+        }catch(Exception e){
+            error = e.getMessage();
+        }
+    }
+%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Escola - ESTUDANTES</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <%@include file="../WEB-INF/jspf/header.jspf"%>
+        <!-- Começa o conteúdo da página -->
+        <main role="main" class="flex-shrink-0">
+            <div class="container">
+                <h1 class="mt-5">ESTUDANTES</h1>
+                <%if(session.getAttribute("user")==null){%>
+                    <p class="lead"><h3>Autenticação necessária para acesso.</h3></p>
+                <%}else{%>
+                    <%if(error!=null){%>
+                        <h3><%=error%></h3> 
+                    <%}%>
+                    <% User user = (User) session.getAttribute("user");%>
+                    <%if(user.getRole().equals("ADMIN")){%>
+                    <fieldset>
+                        <legend>NOVO ESTUDANTE:</legend>
+                            <form>
+                                NOME: <input type="text" name="name"/>
+                                ENDEREÇO: <input type="text" name="address"/>
+                                TELEFONE: <input type="text" name="phone"/>
+                                <input type="submit" name="formNewStudent" value="Adicionar"/>
+                            </form>
+                    </fieldset><hr>
+                    <%}%>
+                    <fieldset>
+                        <legend>BUSCAR ESTUDANTE:</legend>
+                            <form>
+                                NOME: <input type="text" name="name"/>
+                                <input type="submit" name="searchStudent" value="Buscar"/>
+                            </form>
+                    </fieldset>
+                    <table border="1">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>NOME</th>
+                                <th>TURMA</th>
+                                <th>TELEFONE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%--for(Student s: User.getUsers()){%>
+                                <tr>
+                                    <td><%=u.getId()%></td>
+                                    <td><%=u.getRole()%></td>
+                                    <td><%=u.getName() %></td>
+                                    <td><%=u.getLogin() %></td>
+                                    <td>
+                                        <form>
+                                            <input type="hidden" name="id" value="<%=u.getId()%>"/>
+                                            <input type="submit" name="formDeleteUser" value="Remover"/>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <%}--%>
+                        </tbody>
+                    </table>
+                <%}%>
+            </div>
+        </main>
+            <!-- Começa o footer da página -->
+        <%@include file="../WEB-INF/jspf/footer.jspf" %>
     </body>
 </html>
